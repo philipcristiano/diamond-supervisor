@@ -2,12 +2,12 @@ import diamond
 import xmlrpclib
 
 
-class SupervisordCollecor(diamond.collector.Collector):
+class SupervisordCollector(diamond.collector.Collector):
     """Collects data from supervisord."""
 
     def collect(self):
         server = xmlrpclib.Server('http://localhost:9001')
-        states = server.getAllProcessInfo()
+        states = server.supervisor.getAllProcessInfo()
 
         state_counts = {}
 
@@ -16,4 +16,5 @@ class SupervisordCollecor(diamond.collector.Collector):
             state_counts[statename] = state_counts.get(statename, 0) + 1
 
         for statename, count in state_counts.items():
-            self.publish('statename', count)
+            self.publish(statename, count); print count
+
